@@ -2,21 +2,23 @@ import { Container, ContainerModule } from "inversify";
 import { App } from "./app";
 import { IDotenvService } from "./dotenv/dotenv.service.interface";
 import { DotenvService } from "./dotenv/dotenv.service";
-import { TYPES } from "./config/inversify.types";
+import { INVERSIFY_TYPES } from "./config/inversify.types";
 import "reflect-metadata";
 import { LoggerService } from "./logger/logger.service";
+import { AuthControllet } from "./auth/auth.controllet";
 
 const appBinding = new ContainerModule((bind) => {
-	bind<IDotenvService>(TYPES.DotenvService).to(DotenvService);
-	bind<LoggerService>(TYPES.Logger).to(LoggerService);
-	bind<App>(TYPES.App).to(App);
+	bind<IDotenvService>(INVERSIFY_TYPES.DotenvService).to(DotenvService);
+	bind<LoggerService>(INVERSIFY_TYPES.Logger).to(LoggerService);
+	bind<AuthControllet>(INVERSIFY_TYPES.AuthControllet).to(AuthControllet);
+	bind<App>(INVERSIFY_TYPES.App).to(App);
 });
 
 function bootstrap(): void {
 	const appContainer = new Container();
 	appContainer.load(appBinding);
 
-	const app = appContainer.get<App>(TYPES.App);
+	const app = appContainer.get<App>(INVERSIFY_TYPES.App);
 	app.init();
 }
 

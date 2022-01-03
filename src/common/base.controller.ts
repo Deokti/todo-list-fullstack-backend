@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../config/inversify.types";
+import { INVERSIFY_TYPES } from "../config/inversify.types";
 import { LoggerService } from "../logger/logger.service";
 import { IControllerRoutes } from "./route.interface";
 
@@ -8,7 +8,7 @@ import { IControllerRoutes } from "./route.interface";
 export abstract class BaseController {
 	private readonly _router: Router;
 
-	constructor(@inject(TYPES.Logger) private logger: LoggerService) {
+	constructor(@inject(INVERSIFY_TYPES.Logger) private logger: LoggerService) {
 		this._router = Router();
 	}
 

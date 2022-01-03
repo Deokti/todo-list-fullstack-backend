@@ -1,11 +1,10 @@
 import express, { Express } from "express";
-import { Logger } from "tslog";
 import { injectable, inject } from "inversify";
-import { TYPES } from "./config/inversify.types";
+import { INVERSIFY_TYPES } from "./config/inversify.types";
 import { IDotenvService } from "./dotenv/dotenv.service.interface";
 import "reflect-metadata";
 import { LoggerService } from "./logger/logger.service";
-import { BaseController } from "./common/base.controller";
+import { AuthControllet } from "./auth/auth.controllet";
 
 @injectable()
 export class App {
@@ -13,17 +12,20 @@ export class App {
 	port: string | number;
 
 	constructor(
-		@inject(TYPES.DotenvService) private dotenvService: IDotenvService,
-		@inject(TYPES.Logger) private logger: LoggerService,
+		@inject(INVERSIFY_TYPES.DotenvService) private dotenvService: IDotenvService,
+		@inject(INVERSIFY_TYPES.Logger) private logger: LoggerService,
+		@inject(INVERSIFY_TYPES.AuthControllet) private authControllet: AuthControllet,
 	) {
 		this.app = express();
 		this.port = this.dotenvService.get("PORT") || 8000;
 	}
-	get router(): express.Router {
-		throw new Error("Method not implemented.");
+
+	useRoutes(): void {
+		this.app.use("/auth", this.authControllet.router);
 	}
 
 	init(): void {
+		this.useRoutes();
 		this.app.listen(this.port);
 		this.logger.logger.info(`Сервер запущен на http://localhost:${this.port}`);
 	}
