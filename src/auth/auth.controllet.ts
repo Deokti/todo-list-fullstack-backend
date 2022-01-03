@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { PrismaClient } from "@prisma/client";
 import { inject, injectable } from "inversify";
 import "reflect-metadata";
 import { BaseController } from "../common/base.controller";
@@ -7,8 +7,11 @@ import { LoggerService } from "../logger/logger.service";
 
 @injectable()
 export class AuthControllet extends BaseController {
+	client: PrismaClient;
+
 	constructor(@inject(INVERSIFY_TYPES.Logger) private loggerService: LoggerService) {
 		super(loggerService);
+		this.client = new PrismaClient();
 
 		this.bindRouter([
 			{ path: "/login", method: "get", func: this.login },
