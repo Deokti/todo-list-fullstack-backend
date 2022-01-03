@@ -3,4 +3,5 @@ export const INVERSIFY_TYPES = {
 	App: Symbol.for("App"),
 	Logger: Symbol.for("Logger"),
 	AuthControllet: Symbol.for("AuthControllet"),
+	PrismaService: Symbol.for("PrismaService"),
 };

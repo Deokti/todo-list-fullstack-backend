@@ -6,11 +6,13 @@ import { INVERSIFY_TYPES } from "./config/inversify.types";
 import "reflect-metadata";
 import { LoggerService } from "./logger/logger.service";
 import { AuthControllet } from "./auth/auth.controllet";
+import { PrismaService } from "./database/prisma.service";
 
 const appBinding = new ContainerModule((bind) => {
 	bind<IDotenvService>(INVERSIFY_TYPES.DotenvService).to(DotenvService);
 	bind<LoggerService>(INVERSIFY_TYPES.Logger).to(LoggerService);
 	bind<AuthControllet>(INVERSIFY_TYPES.AuthControllet).to(AuthControllet);
+	bind<PrismaService>(INVERSIFY_TYPES.PrismaService).to(PrismaService);
 	bind<App>(INVERSIFY_TYPES.App).to(App);
 });
 
