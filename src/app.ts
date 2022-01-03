@@ -4,9 +4,9 @@ import { INVERSIFY_TYPES } from "./config/inversify.types";
 import { IDotenvService } from "./dotenv/dotenv.service.interface";
 import "reflect-metadata";
 import { LoggerService } from "./logger/logger.service";
-import { AuthControllet } from "./auth/auth.controllet";
-import { PrismaClient } from "@prisma/client";
+import { AuthControllet } from "./auth/auth.controller";
 import { PrismaService } from "./database/prisma.service";
+import { json } from "body-parser";
 
 @injectable()
 export class App {
@@ -27,7 +27,12 @@ export class App {
 		this.app.use("/auth", this.authControllet.router);
 	}
 
+	useJson(): void {
+		this.app.use(json());
+	}
+
 	init(): void {
+		this.useJson();
 		this.useRoutes();
 		this.prismaService.connect();
 		this.app.listen(this.port);

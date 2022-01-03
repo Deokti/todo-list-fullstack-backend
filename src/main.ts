@@ -5,7 +5,7 @@ import { DotenvService } from "./dotenv/dotenv.service";
 import { INVERSIFY_TYPES } from "./config/inversify.types";
 import "reflect-metadata";
 import { LoggerService } from "./logger/logger.service";
-import { AuthControllet } from "./auth/auth.controllet";
+import { AuthControllet } from "./auth/auth.controller";
 import { PrismaService } from "./database/prisma.service";
 
 const appBinding = new ContainerModule((bind) => {
