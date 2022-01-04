@@ -8,7 +8,6 @@ import { IAuthController } from "./auth.controller.interface";
 import { IAuthService } from "./auth.service.interface";
 import { IUserAuthDto } from "./dto/user.auth.interface";
 import "reflect-metadata";
-import { IExeptionFilter } from "../errors/exeption.filter.interface";
 import { HTTPError } from "../errors/http-error";
 
 // Данный класс отвечает за ответ на поступающие дейсвтия.
