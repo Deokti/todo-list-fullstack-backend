@@ -8,6 +8,9 @@ import { PrismaService } from "../database/prisma.service";
 import { LoggerService } from "../logger/logger.service";
 import { IAuthController } from "./auth.controller.interface";
 
+// Данный класс отвечает за ответ на поступающие дейсвтия.
+// Например, при создании пользователя всё что он делает, это активирует функции
+
 @injectable()
 export class AuthControllet extends BaseController implements IAuthController {
 	constructor(
