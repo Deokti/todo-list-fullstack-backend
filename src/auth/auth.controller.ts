@@ -2,10 +2,12 @@ import { NextFunction, Response, Request } from "express";
 import { inject, injectable } from "inversify";
 import "reflect-metadata";
 import { BaseController } from "../common/base.controller";
+import { ValidateMiddleware } from "../common/validate.middleware";
 import { INVERSIFY_TYPES } from "../config/inversify.types";
 import { LoggerService } from "../logger/logger.service";
 import { IAuthController } from "./auth.controller.interface";
 import { IAuthService } from "./auth.service.interface";
+import { IUserAuthDto } from "./dto/user.auth.interface";
 
 // Данный класс отвечает за ответ на поступающие дейсвтия.
 // Например, при создании пользователя всё что он делает, это активирует функции
@@ -19,8 +21,18 @@ export class AuthControllet extends BaseController implements IAuthController {
 		super(loggerService);
 
 		this.bindRouter([
-			{ path: "/login", method: "get", func: this.login },
-			{ path: "/register", method: "post", func: this.register },
+			{
+				path: "/login",
+				method: "get",
+				func: this.login,
+				middleware: [new ValidateMiddleware(IUserAuthDto)],
+			},
+			{
+				path: "/register",
+				method: "post",
+				func: this.register,
+				middleware: [new ValidateMiddleware(IUserAuthDto)],
+			},
 		]);
 	}
 
