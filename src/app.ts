@@ -8,6 +8,7 @@ import { AuthControllet } from "./auth/auth.controller";
 import { PrismaService } from "./database/prisma.service";
 import { json } from "body-parser";
 import { IExeptionFilter } from "./errors/exeption.filter.interface";
+import cors from "cors";
 
 @injectable()
 export class App {
@@ -37,7 +38,17 @@ export class App {
 		this.app.use(this.exeptionFilter.catch.bind(this.exeptionFilter));
 	}
 
+	useCors(): void {
+		this.app.use(
+			cors({
+				credentials: true,
+				origin: this.dotenvService.get("CLIENT_URL"),
+			}),
+		);
+	}
+
 	init(): void {
+		this.useCors();
 		this.useJson();
 		this.useRoutes();
 		this.useExeptionFilters();

@@ -24,7 +24,7 @@ export class AuthControllet extends BaseController implements IAuthController {
 		this.bindRouter([
 			{
 				path: "/login",
-				method: "get",
+				method: "post",
 				func: this.login,
 				middleware: [new ValidateMiddleware(IUserAuthDto)],
 			},
