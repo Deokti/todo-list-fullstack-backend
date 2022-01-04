@@ -8,6 +8,8 @@ import { IAuthController } from "./auth.controller.interface";
 import { IAuthService } from "./auth.service.interface";
 import { IUserAuthDto } from "./dto/user.auth.interface";
 import "reflect-metadata";
+import { IExeptionFilter } from "../errors/exeption.filter.interface";
+import { HTTPError } from "../errors/http-error";
 
 // Данный класс отвечает за ответ на поступающие дейсвтия.
 // Например, при создании пользователя всё что он делает, это активирует функции
@@ -39,8 +41,9 @@ export class AuthControllet extends BaseController implements IAuthController {
 	async login({ body }: Request, res: Response, next: NextFunction): Promise<void> {
 		const result = await this.authService.findUser(body);
 		if (!result) {
-			this.send(res, 422, "Не правильный Email или пароль");
-			return;
+			return next(
+				new HTTPError(422, "Пользователь с таким Email или паролем не существует", "LOGIN"),
+			);
 		}
 		this.ok(res, body);
 	}
@@ -49,8 +52,7 @@ export class AuthControllet extends BaseController implements IAuthController {
 		const result = await this.authService.createUser(body);
 
 		if (!result) {
-			this.send(res, 422, "Пользовать с таким Email уже существует");
-			return;
+			return next(new HTTPError(422, "Пользовать с таким Email уже существует", "REGISTER"));
 		}
 
 		this.ok(res, result);

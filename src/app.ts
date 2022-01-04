@@ -7,6 +7,7 @@ import { LoggerService } from "./logger/logger.service";
 import { AuthControllet } from "./auth/auth.controller";
 import { PrismaService } from "./database/prisma.service";
 import { json } from "body-parser";
+import { IExeptionFilter } from "./errors/exeption.filter.interface";
 
 @injectable()
 export class App {
@@ -18,6 +19,7 @@ export class App {
 		@inject(INVERSIFY_TYPES.Logger) private logger: LoggerService,
 		@inject(INVERSIFY_TYPES.AuthControllet) private authControllet: AuthControllet,
 		@inject(INVERSIFY_TYPES.PrismaService) private prismaService: PrismaService,
+		@inject(INVERSIFY_TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
 	) {
 		this.app = express();
 		this.port = this.dotenvService.get("PORT") || 8000;
@@ -31,9 +33,14 @@ export class App {
 		this.app.use(json());
 	}
 
+	useExeptionFilters(): void {
+		this.app.use(this.exeptionFilter.catch.bind(this.exeptionFilter));
+	}
+
 	init(): void {
 		this.useJson();
 		this.useRoutes();
+		this.useExeptionFilters();
 		this.prismaService.connect();
 		this.app.listen(this.port);
 		this.logger.logger.info(`Сервер запущен на http://localhost:${this.port}`);

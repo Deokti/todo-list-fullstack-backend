@@ -8,4 +8,5 @@ export const INVERSIFY_TYPES = {
 	AuthControllet: Symbol.for("AuthControllet"),
 	AuthService: Symbol.for("AuthService"),
 	AuthRepository: Symbol.for("AuthRepository"),
+	ExeptionFilter: Symbol.for("ExeptionFilter"),
 };
