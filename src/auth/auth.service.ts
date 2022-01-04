@@ -28,4 +28,12 @@ export class AuthService implements IAuthService {
 
 		return this.authRepository.create(user);
 	}
+
+	async findUser({ email, password }: IUserAuthDto): Promise<boolean> {
+		const isCreatedUser = await this.authRepository.find(email);
+		if (!isCreatedUser) return false;
+
+		const user = new User(isCreatedUser.email, isCreatedUser.password);
+		return user.comparePassword(password);
+	}
 }
