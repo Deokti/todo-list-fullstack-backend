@@ -20,4 +20,12 @@ export class AuthRepository implements IAuthRepository {
 			},
 		});
 	}
+
+	async find(email: string): Promise<UserModel | null> {
+		return this.prismaService.client.userModel.findFirst({
+			where: {
+				email,
+			},
+		});
+	}
 }

@@ -1,7 +1,11 @@
 export const INVERSIFY_TYPES = {
-	DotenvService: Symbol.for("DotenvService"),
 	App: Symbol.for("App"),
 	Logger: Symbol.for("Logger"),
-	AuthControllet: Symbol.for("AuthControllet"),
+
+	DotenvService: Symbol.for("DotenvService"),
 	PrismaService: Symbol.for("PrismaService"),
+
+	AuthControllet: Symbol.for("AuthControllet"),
+	AuthService: Symbol.for("AuthService"),
+	AuthRepository: Symbol.for("AuthRepository"),
 };
