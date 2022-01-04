@@ -3,18 +3,28 @@
 
 import { UserModel } from "@prisma/client";
 import { inject, injectable } from "inversify";
-import "reflect-metadata";
 import { INVERSIFY_TYPES } from "../config/inversify.types";
+import { IDotenvService } from "../dotenv/dotenv.service.interface";
 import { IAuthRepository } from "./auth.repository.interface";
 import { IAuthService } from "./auth.service.interface";
+import { IUserAuthDto } from "./dto/user.auth.interface";
+import { User } from "./user.entity";
+import "reflect-metadata";
 
 @injectable()
 export class AuthService implements IAuthService {
-	constructor(@inject(INVERSIFY_TYPES.AuthRepository) private authRepository: IAuthRepository) {}
+	constructor(
+		@inject(INVERSIFY_TYPES.AuthRepository) private authRepository: IAuthRepository,
+		@inject(INVERSIFY_TYPES.DotenvService) private dotenvService: IDotenvService,
+	) {}
 
-	async createUser(user: UserModel): Promise<UserModel | null> {
-		const isCreatedUser = await this.authRepository.find(user.email);
+	async createUser({ email, password }: IUserAuthDto): Promise<UserModel | null> {
+		const isCreatedUser = await this.authRepository.find(email);
 		if (isCreatedUser) return null;
+
+		const user = new User(email);
+		const salt = this.dotenvService.get("SALT");
+		await user.setPassword(password, Number(salt));
 
 		return this.authRepository.create(user);
 	}
