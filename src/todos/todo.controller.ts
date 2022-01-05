@@ -4,46 +4,53 @@ import "reflect-metadata";
 import { INVERSIFY_TYPES } from "../config/inversify.types";
 import { LoggerService } from "../logger/logger.service";
 import { inject, injectable } from "inversify";
-import { PrismaService } from "../database/prisma.service";
-import { Todo } from "./todo.entity";
+import { ValidateMiddleware } from "../common/validate.middleware";
+import { ITodoTdo } from "./dto/todo.dto";
+import { ITodoController } from "./todo.controller.interface";
+import { ITodoService } from "./todo.service.interface";
+import { HTTPError } from "../errors/http-error";
 
 @injectable()
-export class TodoController extends BaseController {
+export class TodoController extends BaseController implements ITodoController {
 	constructor(
 		@inject(INVERSIFY_TYPES.Logger) private loggerService: LoggerService,
-		@inject(INVERSIFY_TYPES.PrismaService) private prismaService: PrismaService,
+		@inject(INVERSIFY_TYPES.TodoService) private todoService: ITodoService,
 	) {
 		super(loggerService);
 
-		this.bindRouter([{ path: "/todos", method: "post", func: this.create }]);
+		this.bindRouter([
+			{
+				path: "/todos",
+				method: "post",
+				func: this.create,
+				middleware: [new ValidateMiddleware(ITodoTdo)],
+			},
+		]);
 		this.bindRouter([{ path: "/todos/:author", method: "get", func: this.findTodosById }]);
 	}
 
 	async create({ body }: Request, res: Response, next: NextFunction): Promise<void> {
-		const { title, priority, workflow, author } = body;
-		const todo = new Todo(title, priority, workflow, author);
+		const todo = await this.todoService.createTodo(body);
 
-		const create = await this.prismaService.client.todoModel.create({
-			data: {
-				title: todo.title,
-				priority: todo.priority,
-				workflow: todo.workflow,
-				author: todo.author,
-				date: todo.data.toString(),
-			},
-		});
+		if (!todo) {
+			return next(
+				new HTTPError(
+					422,
+					"При создании произошла ошибка. Повторите попытку позже.",
+					"TodoController",
+				),
+			);
+		}
 
-		this.ok(res, create);
+		this.ok(res, todo);
 	}
 
 	async findTodosById({ params }: Request, res: Response, next: NextFunction): Promise<void> {
-		console.log(params);
+		const find = await this.todoService.find(params.author);
 
-		const find = await this.prismaService.client.todoModel.findMany({
-			where: {
-				author: params.author,
-			},
-		});
+		if (!find) {
+			return next(new HTTPError(422, "При получении произошла ошибка", "TodoController"));
+		}
 
 		this.ok(res, find);
 	}

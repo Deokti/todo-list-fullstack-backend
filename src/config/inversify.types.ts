@@ -10,6 +10,8 @@ export const INVERSIFY_TYPES = {
 	AuthRepository: Symbol.for("AuthRepository"),
 
 	TodoController: Symbol.for("TodoController"),
+	TodoService: Symbol.for("TodoService"),
+	TodoRepository: Symbol.for("TodoRepository"),
 
 	ExeptionFilter: Symbol.for("ExeptionFilter"),
 };
