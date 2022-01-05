@@ -41,10 +41,10 @@ export class AuthControllet extends BaseController implements IAuthController {
 		const result = await this.authService.findUser(body);
 		if (!result) {
 			return next(
-				new HTTPError(422, "Пользователь с таким Email или паролем не существует", "LOGIN"),
+				new HTTPError(422, "Пользователя с таким Email или паролем не существует", "LOGIN"),
 			);
 		}
-		this.ok(res, body);
+		this.ok(res, result);
 	}
 
 	async register({ body }: Request, res: Response, next: NextFunction): Promise<void> {

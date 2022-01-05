@@ -29,11 +29,13 @@ export class AuthService implements IAuthService {
 		return this.authRepository.create(user);
 	}
 
-	async findUser({ email, password }: IUserAuthDto): Promise<boolean> {
+	async findUser({ email, password }: IUserAuthDto): Promise<UserModel | false> {
 		const isCreatedUser = await this.authRepository.find(email);
 		if (!isCreatedUser) return false;
 
 		const user = new User(isCreatedUser.email, isCreatedUser.password);
-		return user.comparePassword(password);
+		const comparePassword = await user.comparePassword(password);
+
+		return comparePassword ? isCreatedUser : false;
 	}
 }

@@ -3,5 +3,5 @@ import { IUserAuthDto } from "./dto/user.auth.interface";
 
 export interface IAuthService {
 	createUser: (user: IUserAuthDto) => Promise<UserModel | null>;
-	findUser: (user: IUserAuthDto) => Promise<boolean>;
+	findUser: (user: IUserAuthDto) => Promise<UserModel | false>;
 }
