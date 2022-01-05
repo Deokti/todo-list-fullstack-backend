@@ -13,6 +13,7 @@ import { IAuthService } from "./auth/auth.service.interface";
 import { AuthService } from "./auth/auth.service";
 import { IExeptionFilter } from "./errors/exeption.filter.interface";
 import { ExeptionFilter } from "./errors/exeption.filter";
+import { TodoController } from "./todos/todo.controller";
 
 const appBinding = new ContainerModule((bind) => {
 	bind<IDotenvService>(INVERSIFY_TYPES.DotenvService).to(DotenvService);
@@ -22,6 +23,7 @@ const appBinding = new ContainerModule((bind) => {
 	bind<IAuthService>(INVERSIFY_TYPES.AuthService).to(AuthService);
 	bind<PrismaService>(INVERSIFY_TYPES.PrismaService).to(PrismaService);
 	bind<IExeptionFilter>(INVERSIFY_TYPES.ExeptionFilter).to(ExeptionFilter);
+	bind<TodoController>(INVERSIFY_TYPES.TodoController).to(TodoController);
 	bind<App>(INVERSIFY_TYPES.App).to(App);
 });
 
