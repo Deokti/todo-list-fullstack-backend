@@ -9,6 +9,8 @@ import { ITodoController } from "./todo.controller.interface";
 import { ITodoService } from "./todo.service.interface";
 import { HTTPError } from "../errors/http-error";
 import "reflect-metadata";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
 
 @injectable()
 export class TodoController extends BaseController implements ITodoController {
@@ -28,6 +30,7 @@ export class TodoController extends BaseController implements ITodoController {
 		]);
 		this.bindRouter([{ path: "/todos/:author", method: "get", func: this.findTodosByAuthor }]);
 		this.bindRouter([{ path: "/todos/:id", method: "delete", func: this.deleteTodoById }]);
+		this.bindRouter([{ path: "/todos", method: "put", func: this.update }]);
 	}
 
 	async create({ body }: Request, res: Response, next: NextFunction): Promise<void> {
@@ -47,12 +50,17 @@ export class TodoController extends BaseController implements ITodoController {
 	}
 
 	async findTodosByAuthor({ params }: Request, res: Response, next: NextFunction): Promise<void> {
-		const find = await this.todoService.find(params.author);
+		const find = await this.todoService.findTodos(params.author);
 		this.ok(res, find);
 	}
 
 	async deleteTodoById({ params }: Request, res: Response, next: NextFunction): Promise<void> {
 		await this.todoService.deleteTodo(params.id);
 		this.ok(res, `Задача ${params.id} удалена`);
+	}
+
+	async update({ body }: Request, res: Response, next: NextFunction): Promise<void> {
+		await this.todoService.updateTodo(body);
+		this.ok(res, body);
 	}
 }

@@ -39,4 +39,20 @@ export class TodoRepository implements ITodoRepository {
 			},
 		});
 	}
+
+	async update(todo: TodoModel): Promise<void> {
+		const { author, date, id, priority, title, workflow } = todo;
+		await this.prismaService.client.todoModel.update({
+			where: {
+				id,
+			},
+			data: {
+				author,
+				date,
+				priority,
+				title,
+				workflow,
+			},
+		});
+	}
 }

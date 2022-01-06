@@ -18,11 +18,15 @@ export class TodoService implements ITodoService {
 		return this.todoRepository.create(newTodo);
 	}
 
-	find(author: string): Promise<TodoModel[]> {
+	findTodos(author: string): Promise<TodoModel[]> {
 		return this.todoRepository.find(author);
 	}
 
 	async deleteTodo(id: string): Promise<void> {
 		await this.todoRepository.detele(id);
+	}
+
+	async updateTodo(todo: TodoModel): Promise<void> {
+		await this.todoRepository.update(todo);
 	}
 }
