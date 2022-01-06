@@ -135,4 +135,14 @@ curl DELETE http://localhost:8000/todos/:id
 "Задача *id* удалена"
 ```
 
+#### Update Todo (PUT)
+
+```
+curl PUT http://localhost:8000/todos/
+```
+
+Принимает обновлённый объект задачи.
+
+При успешном удалении возвращает обновлённых объект
+
 ---
