@@ -21,4 +21,8 @@ export class TodoService implements ITodoService {
 	find(author: string): Promise<TodoModel[]> {
 		return this.todoRepository.find(author);
 	}
+
+	async deleteTodo(id: string): Promise<void> {
+		await this.todoRepository.detele(id);
+	}
 }

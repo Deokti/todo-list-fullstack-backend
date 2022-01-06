@@ -13,7 +13,7 @@ export class TodoRepository implements ITodoRepository {
 	async create(todo: Todo): Promise<TodoModel> {
 		const { author, date, priority, title, workflow } = todo;
 
-		return this.prismaService.client.todoModel.create({
+		return await this.prismaService.client.todoModel.create({
 			data: {
 				author,
 				date: date.toString(),
@@ -28,6 +28,14 @@ export class TodoRepository implements ITodoRepository {
 		return await this.prismaService.client.todoModel.findMany({
 			where: {
 				author: author,
+			},
+		});
+	}
+
+	async detele(id: string): Promise<void> {
+		await this.prismaService.client.todoModel.delete({
+			where: {
+				id,
 			},
 		});
 	}
