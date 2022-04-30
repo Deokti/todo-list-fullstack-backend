@@ -29,8 +29,8 @@ export class App {
 	}
 
 	useRoutes(): void {
-		this.app.use("/auth", this.authControllet.router);
 		this.app.use("/", this.todoController.router);
+		this.app.use("/auth", this.authControllet.router);
 	}
 
 	useJson(): void {
@@ -57,6 +57,6 @@ export class App {
 		this.useExeptionFilters();
 		this.prismaService.connect();
 		this.app.listen(this.port);
-		this.logger.logger.info(`Сервер запущен на http://localhost:${this.port}`);
+		this.logger.logger.info(`Сервер запущен`);
 	}
 }
