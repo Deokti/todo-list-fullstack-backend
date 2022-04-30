@@ -16,7 +16,7 @@ export class AuthService implements IAuthService {
 	constructor(
 		@inject(INVERSIFY_TYPES.AuthRepository) private authRepository: IAuthRepository,
 		@inject(INVERSIFY_TYPES.DotenvService) private dotenvService: IDotenvService,
-	) {}
+	) { }
 
 	async createUser({ email, password }: IUserAuthDto): Promise<UserModel | null> {
 		const isCreatedUser = await this.authRepository.find(email);
