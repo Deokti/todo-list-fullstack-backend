@@ -35,8 +35,8 @@ export abstract class BaseController {
 
 			const middlewares = middleware?.map((m) => m.execute.bind(m));
 			const thisFunk = func.bind(this);
-
 			const pipeline = middlewares ? [...middlewares, thisFunk] : thisFunk;
+
 			this.router[method](path, pipeline);
 		}
 	}
