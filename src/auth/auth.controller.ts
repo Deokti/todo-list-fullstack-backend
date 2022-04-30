@@ -44,6 +44,7 @@ export class AuthControllet extends BaseController implements IAuthController {
 				new HTTPError(422, "Пользователя с таким Email или паролем не существует", "LOGIN"),
 			);
 		}
+
 		this.ok(res, result);
 	}
 
