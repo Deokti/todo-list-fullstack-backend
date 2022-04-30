@@ -25,7 +25,7 @@ export class App {
 		@inject(INVERSIFY_TYPES.TodoController) private todoController: TodoController,
 	) {
 		this.app = express();
-		this.port = process.env.PORT || this.dotenvService.get("PORT") || 8000;
+		this.port = process.env.PORT || 3000;
 	}
 
 	useRoutes(): void {
