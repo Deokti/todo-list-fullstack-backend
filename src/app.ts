@@ -45,7 +45,7 @@ export class App {
 		this.app.use(
 			cors({
 				credentials: true,
-				origin: this.dotenvService.get("CLIENT_URL"),
+				origin: "*",
 			}),
 		);
 	}
