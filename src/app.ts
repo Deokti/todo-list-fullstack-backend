@@ -46,7 +46,6 @@ export class App {
 			cors({
 				origin: "*",
 				credentials: true,
-				optionsSuccessStatus: 200,
 			}),
 		);
 	}
