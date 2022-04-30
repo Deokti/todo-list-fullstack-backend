@@ -42,7 +42,13 @@ export class App {
 	}
 
 	useCors(): void {
-		this.app.use(cors());
+		this.app.use(
+			cors({
+				origin: "*",
+				credentials: true,
+				optionsSuccessStatus: 200,
+			}),
+		);
 	}
 
 	init(): void {
